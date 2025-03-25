@@ -1,0 +1,15 @@
+{
+  "name": "exo01-gestion-utilisateur",
+  "version": "1.0.0",
+  "description": "Développez une application Node.js avec Express pour gérer des utilisateurs. Implémentez les fonctionnalités suivantes :",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --watch index.js ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
