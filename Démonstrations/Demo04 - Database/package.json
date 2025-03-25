@@ -1,0 +1,22 @@
+{
+  "name": "demo04-database",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node --env-file=.env --watch src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prod": "node --env-file=.env.production --watch src/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mssql": "^11.0.1",
+    "uuid": "^11.1.0"
+  }
+}
