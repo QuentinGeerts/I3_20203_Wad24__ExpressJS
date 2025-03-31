@@ -40,18 +40,36 @@ class Task {
 
   static async findByUserId(userId) {
     try {
+      await pool.connect();
 
-        await pool.connect();
+      const request = pool.request();
+      request.input("userId", sql.UniqueIdentifier, userId);
 
-        const request = pool.request();
-        request.input('userId', sql.UniqueIdentifier, userId);
-
-        const command = 'SELECT * FROM Task WHERE UserId = @userId ORDER BY IsDone, Title';
-        const result = await request.query(command);
-        return result.recordset;
-
+      const command =
+        "SELECT * FROM Task WHERE UserId = @userId ORDER BY IsDone, Title";
+      const result = await request.query(command);
+      return result.recordset;
     } catch (error) {
       throw new Error("Erreur lors de la recherche par l'id de l'utilisateur.");
+    }
+  }
+
+  static async findById(id) {
+    try {
+      await pool.connect();
+
+      const request = pool.request();
+      request.input("id", sql.UniqueIdentifier, id);
+
+      const command = `SELECT * FROM Task WHERE Id = @id`;
+      const result = await request.query(command);
+
+      return result.recordset[0];
+    } catch (error) {
+      console.log(
+        `Erreur lor de la récupération de la tâche par Id: ${error.message}`
+      );
+      throw new Error("Erreur lor de la récupération de la tâche par Id");
     }
   }
 }
