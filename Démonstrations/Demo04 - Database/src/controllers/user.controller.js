@@ -28,15 +28,42 @@ exports.register = async (req, res) => {
       message: "Utilisateur créé avec succès",
       user: {
         id: user.Id,
-        email: user.Email
+        email: user.Email,
       },
       token,
     });
-
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
 // Connexion d'une utilisateur
-exports.login = (req, res) => {};
+exports.login = async (req, res) => {
+  try {
+    // Valider la requête
+    if (!req.body.email || !req.body.password) {
+      return res.status(400).json({ message: "Email / mot de passe requis." });
+    }
+
+    const user = await User.checkCredentials(req.body.email, req.body.password);
+    if (!user) {
+      return res
+        .status(401)
+        .json({ message: "Email ou mot de passe incorrect." });
+    }
+
+    const token = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRE_IN }
+    );
+
+    res.status(200).json({
+      message: "Connexion réussie.",
+      token,
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

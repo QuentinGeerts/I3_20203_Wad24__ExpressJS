@@ -66,6 +66,27 @@ class User {
       throw new Error("Erreur lors de la recherche d'utilisateur par email.");
     }
   }
+
+  static async checkCredentials(email, password) {
+    try {
+      const user = await this.findByEmail(email);
+
+      if (!user) return null;
+
+      // Vérifier le mot de passe
+      const isMatch = await bcrypt.compare(password, user.Password.toString());
+
+      if (!isMatch) return null;
+
+      return {
+        id: user.Id,
+        email: user.Email,
+      };
+    } catch (error) {
+      console.log(`Erreur lors de la vérification des identifiants: ${error}`);
+      throw new Error("Erreur lors de la vérification des identifiants.");
+    }
+  }
 }
 
 module.exports = User;
