@@ -69,10 +69,34 @@ exports.update = async (req, res) => {
     }
 
     res.status(200).json({
-      message: 'Tâche modifiée avec succès.',
-      task: updatedTask
+      message: "Tâche modifiée avec succès.",
+      task: updatedTask,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.delete = async (req, res) => {
+  try {
+    await Task.delete(req.params.id);
+    res.status(200).json({ message: "Tâche supprimée avec succès." });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.toggleStatus = async (req, res) => {
+  try {
+
+    const updatedTask = await Task.toggleStatus(req.params.id);
+    
+    res.status(200).json({
+      message: `Tâche marquée comme ${updatedTask.IsDone ? 'terminée' : 'non terminée'}`,
+      task: updatedTask
+    })
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}

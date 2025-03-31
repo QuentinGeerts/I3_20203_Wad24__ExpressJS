@@ -19,6 +19,9 @@ router.get('/:id', taskController.findOne);
 router.put('/:id', isTaskOwner, taskController.update);
 
 // Supprimer une tâche
+router.delete('/:id', isTaskOwner, taskController.delete);
+
 // Changer le status d'une tâche (terminée / non terminée)
+router.patch('/:id/toggle', isTaskOwner, taskController.toggleStatus);
 
 module.exports = router;

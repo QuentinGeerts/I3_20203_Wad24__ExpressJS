@@ -98,6 +98,53 @@ class Task {
       throw new Error("Erreur lor de la modification de la tâche");
     }
   }
+
+  static async delete (id) {
+
+    try {
+      
+      await pool.connect();
+      const request = pool.request();
+      request.input('id', sql.UniqueIdentifier, id);
+
+      const command = `DELETE FROM Task WHERE Id = @id;`;
+
+      return await request.query(command);
+
+    } catch (error) {
+      console.log(`Erreur lor de la suppression de la tâche: ${error.message}`);
+      throw new Error("Erreur lor de la suppression de la tâche");
+    }
+  }
+
+  static async toggleStatus (id) {
+    try {
+      
+      await pool.connect();
+
+      const task = await this.findById(id);
+      if (!task) throw new Error('Tâche non trouvée');
+
+      const request = pool.request();
+      request.input('id', sql.UniqueIdentifier, id);
+      request.input('isDone', sql.Bit, !task.IsDone);
+
+      const command = `
+      UPDATE Task
+      SET IsDone = @isDone
+      WHERE Id = @id;
+      SELECT * FROM Task WHERE Id = @id;
+      `;
+
+      const result = await request.query(command);
+      return result.recordset[0];
+
+    } catch (error) {
+      console.log(`Erreur lor de la suppression de la tâche: ${error.message}`);
+      throw new Error("Erreur lor de la suppression de la tâche");
+    }
+  }
 }
+
 
 module.exports = Task;
