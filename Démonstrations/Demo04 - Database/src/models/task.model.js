@@ -72,6 +72,32 @@ class Task {
       throw new Error("Erreur lor de la récupération de la tâche par Id");
     }
   }
+
+  static async update(id, task) {
+    try {
+
+      await pool.connect();
+
+      const request = pool.request();
+      request.input('id', sql.UniqueIdentifier, id);
+      request.input('title', sql.NVarChar, task.title);
+      request.input('isDone', sql.Bit, task.isDone);
+
+      const command = `
+      UPDATE Task
+      SET Title = @title, IsDone = @isDone
+      WHERE Id = @id;
+      SELECT * FROM Task WHERE Id = @id;
+      `;
+
+      const result = await request.query(command);
+      return result.recordset[0];
+
+    } catch (error) {
+      console.log(`Erreur lor de la modification de la tâche: ${error.message}`);
+      throw new Error("Erreur lor de la modification de la tâche");
+    }
+  }
 }
 
 module.exports = Task;

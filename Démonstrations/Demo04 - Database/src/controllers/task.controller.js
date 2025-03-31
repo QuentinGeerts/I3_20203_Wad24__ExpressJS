@@ -52,7 +52,26 @@ exports.findOne = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    // TODO
+    // Vérification des données de la tâche
+
+    if (!req.body.title) {
+      return res.status(400).json({ message: "Le titre est requis." });
+    }
+
+    const taskData = {
+      title: req.body.title,
+      isDone: req.body.isDone !== undefined ? req.body.isDone : req.task.IsDone,
+    };
+
+    const updatedTask = await Task.update(req.params.id, taskData);
+    if (!updatedTask) {
+      return res.status(404).json({ message: "Tâche non trouvée." });
+    }
+
+    res.status(200).json({
+      message: 'Tâche modifiée avec succès.',
+      task: updatedTask
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

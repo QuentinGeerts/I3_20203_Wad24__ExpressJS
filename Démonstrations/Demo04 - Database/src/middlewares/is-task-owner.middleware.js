@@ -14,6 +14,8 @@ const isTaskOwner = async (req, res, next) => {
         .json({ message: "Accès non autorisé à cette tâche." });
     }
 
+    req.task = task;
+
     next();
   } catch (error) {
     return res.status(500).json({ message: error.message });
