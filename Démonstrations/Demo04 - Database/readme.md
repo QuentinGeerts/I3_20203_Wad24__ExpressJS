@@ -2,7 +2,13 @@
 
 Création d'une API REST sécurisée
 
-1. Installation des dépendances
+1. Création du projet
+
+```bash
+npm init -y
+```
+
+2. Installation des dépendances
 
 ```bash
 npm install express mssql uuid bcrypt jsonwebtoken cors
@@ -16,7 +22,7 @@ Ces dépendances incluent:
 - `jsonwebtoken` : Générer et vérifier les tokens JWT
 - `cors` : Middleware pour gérer les requêtes cross-origin
 
-2. Création d'un fichier `.gitignore` :
+3. Création d'un fichier `.gitignore` :
 
 ```bash
 npx gitignore node
